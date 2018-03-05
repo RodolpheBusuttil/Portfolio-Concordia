@@ -1,0 +1,381 @@
+#N canvas 90 185 1471 847 10;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array sample 4e+06 float 2;
+#X coords 0 1 4e+06 -1 300 150 1 0 0;
+#X restore 944 224 graph;
+#X obj 936 98 soundfiler;
+#X floatatom 936 126 10 0 0 0 - - -, f 10;
+#X obj 939 505 vsl 15 100 0 1 0 0 empty empty Gain 0 -9 0 10 -262144
+-1 -1 1000 1;
+#X floatatom 940 616 5 0 0 0 - - -, f 5;
+#X text 929 25 Lecture d'un fichier son stereo;
+#X obj 936 145 send size;
+#X msg 1039 486 0;
+#X msg 1084 487 0.5;
+#X obj 37 826 dac~;
+#X msg 940 654 \$1 25;
+#X obj 940 676 line~;
+#X obj 47 695 *~;
+#X obj 348 274 chop~;
+#X obj 362 136 decimate~;
+#X obj 326 647 foldback~;
+#X obj 309 771 foldover~;
+#X obj 306 878 freqdiv~;
+#X obj 307 984 saturate~;
+#X obj 346 370 split~;
+#X obj 339 525 vowel~;
+#X text 436 137 ringmodulator;
+#X text 438 156 agit sur les parametre de samplerate et de bitrate
+;
+#X obj 364 243 osc~ 2;
+#X obj 367 193 hsl 128 15 0 440 0 0 empty empty modulator 7 8 0 10
+-262144 -1 -1 0 1;
+#X floatatom 364 217 5 0 0 0 - - -, f 5;
+#X floatatom 415 246 5 0 0 0 - - -, f 5;
+#X obj 416 219 hsl 128 15 0 10 0 0 empty empty amplification_factor
+7 8 0 10 -262144 -1 -1 0 1;
+#X text 395 274 Modulator de signal(genre de LFO en onde carré;
+#X obj 417 16 hsl 128 15 0 1 0 0 empty empty sample_rate_reduction
+3 8 0 10 -262144 -1 -1 0 1;
+#X floatatom 413 75 8 0 0 0 - - -, f 8;
+#X floatatom 562 99 5 0 0 0 - - -, f 5;
+#X obj 562 77 int;
+#X obj 562 54 + 1;
+#X obj 413 35 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -262144 -1
+-1 3;
+#N canvas 1 79 450 300 powOf2 0;
+#N canvas 0 50 450 250 (subpatch) 0;
+#X array \$0-powOf2 8 float 3;
+#A 0 1 0.5 0.25 0.125 0.0625 0.03125 0.015625 0.0078125;
+#X coords 0 1 8 0 200 140 1 0 0;
+#X restore 225 66 graph;
+#X obj 75 170 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 94 146 loadbang;
+#X obj 10 92 tabread \$0-powOf2;
+#X obj 10 240 outlet;
+#X obj 10 68 inlet;
+#X obj 17 121 s \$0-timebase;
+#X msg 110 274 \; \$1-powOf2 0 256 128 64 32 16 8 4 2;
+#X obj 94 194 \$0;
+#X msg 55 218 \; \$1-powOf2 0 1 0.5 0.25 0.125 0.0625 0.03125 0.015625
+0.0078125, f 62;
+#X obj 0 0 cnv 15 425 20 empty empty empty 3 12 0 14 -204280 -1 0;
+#X text 6 1 Inverse power of 2;
+#X connect 1 0 8 0;
+#X connect 2 0 8 0;
+#X connect 3 0 4 0;
+#X connect 3 0 6 0;
+#X connect 5 0 3 0;
+#X connect 8 0 9 0;
+#X restore 413 54 pd powOf2;
+#X obj 562 35 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -262144 -1
+-1 7;
+#X obj 564 16 hsl 128 15 1 32 0 0 empty empty sample_bit_reduction
+4 8 0 10 -262144 -1 -1 0 1;
+#X floatatom 385 345 5 -10 10 0 - - -, f 5;
+#X obj 388 326 hsl 128 15 -1 1 0 0 empty empty split_level 8 8 0 10
+-262144 -1 -1 0 1;
+#X text 403 373 spliter de signal (la waveforme se separ en deux en
+coure de lecture);
+#X obj 378 413 vradio 15 1 0 5 empty empty empty 0 -8 0 10 -262144
+-1 -1 1;
+#X text 396 413 a;
+#X text 396 428 e;
+#X text 396 443 i;
+#X text 396 458 o;
+#X text 396 473 u;
+#X floatatom 378 502 5 0 0 0 - - -, f 5;
+#X text 390 527 filtre avec formant (type de vocoder) interessant a
+utiliser avec un clavier;
+#X floatatom 370 957 5 -1 1 0 - - -, f 5;
+#X obj 373 936 hsl 128 15 -1 1 0 0 empty empty threshold 10 8 0 10
+-262144 -1 -1 0 1;
+#X text 382 985 Legere saturation;
+#X text 370 880 process le signal en miroire avec des rampes différentes
+effect avec rampe deja modulé \, pas de slider (systeme a incrementation)
+;
+#X text 380 767 process le signal en mirroire (symetrique) avec des
+rampes différentes effect avec slider precis et tres modulable.;
+#X text 404 642 process le signal en mirroire (modulation sur le signal
+superieure) avec des rampes différentes effect avec slider precis
+et tres modulable.;
+#X floatatom 402 618 5 0 0 0 - - -, f 5;
+#X floatatom 356 610 5 0 0 0 - - -, f 5;
+#X obj 359 575 hsl 128 15 -1 1 0 0 empty empty lower_mirror_level 10
+8 0 10 -262144 -1 -1 0 1;
+#X obj 405 598 hsl 128 15 -1 1 0 0 empty empty upper_mirror_level 10
+8 0 10 -262144 -1 -1 0 1;
+#X floatatom 392 741 5 0 0 0 - - -, f 5;
+#X floatatom 344 739 5 0 0 0 - - -, f 5;
+#X obj 347 701 hsl 128 15 0 1 0 0 empty empty amplification/drive 5
+8 0 10 -262144 -1 -1 0 1;
+#X obj 395 722 hsl 128 15 0 1 0 0 empty empty symetry/push 5 8 0 10
+-262144 -1 -1 0 1;
+#X floatatom 360 848 5 0 0 0 - - -, f 5;
+#X text 483 806 8;
+#X obj 360 827 hradio 15 1 0 9 empty empty empty 0 -8 0 10 -262144
+-1 -1 3;
+#X text 362 807 0;
+#X text 1039 469 niveau de volume;
+#X obj 275 110 catch~ decimate;
+#X obj 269 249 catch~ chop;
+#X obj 275 346 catch~ split;
+#X obj 258 500 catch~ vowel;
+#X obj 228 623 catch~ foldback;
+#X obj 222 735 catch~ foldover;
+#X obj 244 847 catch~ freqdiv;
+#X obj 246 953 catch~ saturate;
+#X obj 1042 550 vradio 15 1 0 10 empty empty empty 0 -8 0 10 -262144
+-1 -1 9;
+#X text 1062 550 none;
+#X text 1061 563 1st effect;
+#X text 1061 579 2nd effect;
+#X text 1061 595 3rd effect;
+#X text 1061 610 4th effect;
+#X text 1061 625 5th effect;
+#X text 1061 641 6th effect;
+#X text 1061 656 7th effect;
+#X text 1061 670 8th effect;
+#X obj 1042 716 s comutateur;
+#X text 1270 252 librairie d'effet audio qui permet plusieur mode de
+modulation accdentué sur l'aspect de variatio des parametre de frenquence
+et de resolution et l'amplitude.;
+#N canvas 73 116 1543 872 Upside_Down 0;
+#X obj 356 93 t b f;
+#X obj 356 71 receive size;
+#X obj 57 756 tabplay~ sample;
+#X obj 350 154 metro;
+#X obj 396 125 expr ($f1*1000)/44100;
+#X obj 176 758 tabplay~ sample;
+#X obj 295 758 tabplay~ sample;
+#X obj 415 759 tabplay~ sample;
+#X obj 534 760 tabplay~ sample;
+#X obj 651 762 tabplay~ sample;
+#X obj 780 762 tabplay~ sample;
+#X obj 911 763 tabplay~ sample;
+#X obj 57 807 throw~ decimate;
+#X obj 177 807 throw~ chop;
+#X obj 295 810 throw~ split;
+#X obj 415 811 throw~ vowel;
+#X obj 534 813 throw~ foldback;
+#X obj 654 814 throw~ foldover;
+#X obj 779 814 throw~ freqdiv;
+#X obj 910 814 throw~ saturate;
+#X obj 347 290 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 430 165 15 0 0 0 - - -, f 15;
+#X obj 386 291 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 428 292 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 467 293 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 505 292 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 544 293 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 586 294 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 626 293 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 61 428 stop;
+#X msg 200 435 stop;
+#X msg 314 434 stop;
+#X msg 432 437 stop;
+#X msg 550 435 stop;
+#X msg 678 435 stop;
+#X msg 814 433 stop;
+#X msg 934 436 stop;
+#X obj 349 217 r comutateur;
+#X obj 349 258 gate 9 1, f 40;
+#X obj 1056 287 tabplay~ sample;
+#X obj 1056 328 throw~ no effect;
+#X obj 771 274 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 1055 436 stop;
+#X connect 0 0 3 0;
+#X connect 0 1 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 12 0;
+#X connect 3 0 38 1;
+#X connect 4 0 21 0;
+#X connect 4 0 3 1;
+#X connect 5 0 13 0;
+#X connect 6 0 14 0;
+#X connect 7 0 15 0;
+#X connect 8 0 16 0;
+#X connect 9 0 17 0;
+#X connect 10 0 18 0;
+#X connect 11 0 19 0;
+#X connect 20 0 2 0;
+#X connect 20 0 29 0;
+#X connect 22 0 5 0;
+#X connect 22 0 30 0;
+#X connect 23 0 6 0;
+#X connect 23 0 31 0;
+#X connect 24 0 7 0;
+#X connect 24 0 32 0;
+#X connect 25 0 8 0;
+#X connect 25 0 33 0;
+#X connect 26 0 9 0;
+#X connect 26 0 34 0;
+#X connect 27 0 10 0;
+#X connect 27 0 35 0;
+#X connect 28 0 11 0;
+#X connect 28 0 36 0;
+#X connect 29 0 5 0;
+#X connect 29 0 6 0;
+#X connect 29 0 7 0;
+#X connect 29 0 8 0;
+#X connect 29 0 9 0;
+#X connect 29 0 10 0;
+#X connect 29 0 11 0;
+#X connect 29 0 39 0;
+#X connect 30 0 2 0;
+#X connect 30 0 6 0;
+#X connect 30 0 7 0;
+#X connect 30 0 8 0;
+#X connect 30 0 9 0;
+#X connect 30 0 10 0;
+#X connect 30 0 11 0;
+#X connect 30 0 39 0;
+#X connect 31 0 2 0;
+#X connect 31 0 5 0;
+#X connect 31 0 7 0;
+#X connect 31 0 8 0;
+#X connect 31 0 9 0;
+#X connect 31 0 10 0;
+#X connect 31 0 11 0;
+#X connect 31 0 39 0;
+#X connect 32 0 2 0;
+#X connect 32 0 5 0;
+#X connect 32 0 6 0;
+#X connect 32 0 8 0;
+#X connect 32 0 9 0;
+#X connect 32 0 10 0;
+#X connect 32 0 11 0;
+#X connect 32 0 39 0;
+#X connect 33 0 2 0;
+#X connect 33 0 5 0;
+#X connect 33 0 6 0;
+#X connect 33 0 7 0;
+#X connect 33 0 9 0;
+#X connect 33 0 10 0;
+#X connect 33 0 11 0;
+#X connect 33 0 39 0;
+#X connect 34 0 2 0;
+#X connect 34 0 5 0;
+#X connect 34 0 6 0;
+#X connect 34 0 7 0;
+#X connect 34 0 10 0;
+#X connect 34 0 11 0;
+#X connect 34 0 8 0;
+#X connect 34 0 39 0;
+#X connect 35 0 2 0;
+#X connect 35 0 5 0;
+#X connect 35 0 6 0;
+#X connect 35 0 7 0;
+#X connect 35 0 8 0;
+#X connect 35 0 9 0;
+#X connect 35 0 11 0;
+#X connect 35 0 39 0;
+#X connect 36 0 2 0;
+#X connect 36 0 5 0;
+#X connect 36 0 6 0;
+#X connect 36 0 7 0;
+#X connect 36 0 8 0;
+#X connect 36 0 9 0;
+#X connect 36 0 10 0;
+#X connect 36 0 39 0;
+#X connect 37 0 38 0;
+#X connect 37 0 38 1;
+#X connect 38 0 20 0;
+#X connect 38 1 22 0;
+#X connect 38 2 23 0;
+#X connect 38 3 24 0;
+#X connect 38 4 25 0;
+#X connect 38 5 26 0;
+#X connect 38 6 27 0;
+#X connect 38 7 28 0;
+#X connect 38 8 41 0;
+#X connect 39 0 40 0;
+#X connect 41 0 39 0;
+#X connect 41 0 42 0;
+#X connect 42 0 2 0;
+#X connect 42 0 5 0;
+#X connect 42 0 6 0;
+#X connect 42 0 7 0;
+#X connect 42 0 8 0;
+#X connect 42 0 9 0;
+#X connect 42 0 10 0;
+#X connect 42 0 11 0;
+#X restore 1168 539 pd Upside_Down;
+#X text 1167 523 sous patch d'aiguillage du signal;
+#X text 27 156 les effets sont prereglé car cela distorsione en onde
+carré tres facilement \, je n'ai pas mi de loadbang pour cette raison
+;
+#X text 1273 222 Sigpack library;
+#X text 1061 686 no effect;
+#X obj 54 401 catch~ no effect;
+#X msg 936 52 read -resize ../Programation_Pure_Data_1/Bulgarian_folklor_Kaval_sviri.wav
+sample;
+#X connect 1 0 2 0;
+#X connect 2 0 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 10 0;
+#X connect 7 0 3 0;
+#X connect 8 0 3 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 1;
+#X connect 12 0 9 0;
+#X connect 12 0 9 1;
+#X connect 13 0 12 0;
+#X connect 14 0 12 0;
+#X connect 15 0 12 0;
+#X connect 16 0 12 0;
+#X connect 17 0 12 0;
+#X connect 18 0 12 0;
+#X connect 19 0 12 0;
+#X connect 20 0 12 0;
+#X connect 23 0 13 1;
+#X connect 24 0 25 0;
+#X connect 25 0 23 0;
+#X connect 26 0 13 2;
+#X connect 27 0 26 0;
+#X connect 29 0 30 0;
+#X connect 30 0 14 1;
+#X connect 31 0 14 2;
+#X connect 32 0 31 0;
+#X connect 33 0 32 0;
+#X connect 34 0 35 0;
+#X connect 35 0 30 0;
+#X connect 36 0 33 0;
+#X connect 37 0 32 0;
+#X connect 38 0 19 1;
+#X connect 39 0 38 0;
+#X connect 41 0 47 0;
+#X connect 47 0 20 1;
+#X connect 49 0 18 1;
+#X connect 50 0 49 0;
+#X connect 55 0 15 2;
+#X connect 56 0 15 1;
+#X connect 57 0 56 0;
+#X connect 58 0 55 0;
+#X connect 59 0 16 2;
+#X connect 60 0 16 1;
+#X connect 61 0 60 0;
+#X connect 62 0 59 0;
+#X connect 63 0 17 1;
+#X connect 65 0 63 0;
+#X connect 68 0 14 0;
+#X connect 69 0 13 0;
+#X connect 70 0 19 0;
+#X connect 71 0 20 0;
+#X connect 72 0 15 0;
+#X connect 73 0 16 0;
+#X connect 74 0 17 0;
+#X connect 75 0 18 0;
+#X connect 76 0 86 0;
+#X connect 93 0 12 0;
+#X connect 94 0 1 0;
